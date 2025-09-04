@@ -1,0 +1,207 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mikeb55.github.io/mikes-generative-core/schema/riff.schema.json",
+  "title": "Riff",
+  "description": "Standard structure for a guitar riff shared across Mike\u2019s Generative Ecosystem.",
+  "type": "object",
+  "required": [
+    "version",
+    "id",
+    "source_app",
+    "theory",
+    "tuning",
+    "notes"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version used by this riff file."
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique ID for the riff (uuid or similar)."
+    },
+    "title": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "author": {
+      "type": "string"
+    },
+    "source_app": {
+      "type": "string",
+      "description": "Which app created this riff (e.g., riffgen, irm)."
+    },
+    "profile": {
+      "type": "object",
+      "description": "Stylistic profile metadata (from mrprofiles).",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "instrument": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "theory": {
+      "type": "object",
+      "required": [
+        "tempo_bpm",
+        "meter"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "e.g., C, D#, Fm"
+        },
+        "scale": {
+          "type": "string",
+          "description": "e.g., blues, dorian, major_pentatonic"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "tempo_bpm": {
+          "type": "number"
+        },
+        "meter": {
+          "type": "string",
+          "description": "e.g., 4/4, 7/8"
+        },
+        "swing": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "tuning": {
+      "type": "array",
+      "description": "Strings low\u2192high, e.g., ['E2','A2','D3','G3','B3','E4'].",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4
+    },
+    "notes": {
+      "type": "array",
+      "description": "Sequence of note events.",
+      "items": {
+        "type": "object",
+        "required": [
+          "start_beat",
+          "duration_beats"
+        ],
+        "properties": {
+          "string": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8,
+            "description": "Guitar string number (1=high E)."
+          },
+          "fret": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "midi": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 127
+          },
+          "pitch": {
+            "type": "string",
+            "description": "e.g., C4"
+          },
+          "velocity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 127
+          },
+          "start_beat": {
+            "type": "number",
+            "description": "Beat offset from start (can be fractional)."
+          },
+          "duration_beats": {
+            "type": "number"
+          },
+          "accent": {
+            "type": "boolean"
+          },
+          "techniques": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "slide",
+                "bend",
+                "vibrato",
+                "hammer-on",
+                "pull-off",
+                "mute",
+                "harmonic",
+                "palm-mute",
+                "staccato"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sections": {
+      "type": "array",
+      "description": "Optional higher-level grouping of notes (A/B/Verse/Chorus).",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "start_beat",
+          "end_beat"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "start_beat": {
+            "type": "number"
+          },
+          "end_beat": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "midi": {
+          "type": "string",
+          "format": "uri"
+        },
+        "audio_preview": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
